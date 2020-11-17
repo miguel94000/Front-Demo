@@ -13,45 +13,41 @@ import FavoriteScreen from "./src/screen/favoriteScreen";
 import ChoiceAuthScreen from "./src/screen/choiceAuthScreen";
 import ProductScreen from "./src/screen/productScreen";
 import ProfilScreen from "./src/screen/profilScreen";
-import {Provider as AuthProvider} from "./src/context/authContext"
+import { Provider as AuthProvider } from "./src/context/authContext";
 
 import BottomBar from "./src/tools/bottonBar";
 
-
 // Switch est un site map simple "squelette de l'app"
-const switchNavigator = createSwitchNavigator(
-  {
-    // Le stack utilise le bouton "Précédent" du téléphone
-    //BottomFlow: BottomBar,
+const switchNavigator = createSwitchNavigator({
+  // Le stack utilise le bouton "Précédent" du téléphone
+  //BottomFlow: BottomBar,
 
-    // Le stack utilise le bouton "Précédent" du téléphone
-    LoginFlow: createStackNavigator({
-      Home: HomeScreen,
-      Parameter: ParameterScreen,
-      ChoiceAuth: ChoiceAuthScreen,
-      SignUp: SignUpScreen,
-      SignIn: SignInScreen,
-      Profil: ProfilScreen,
-      Scanner: ScannerScreen,
-      Search: SearchScreen,
-      Favorite: FavoriteScreen,
-      History: HistoryScreen,
-      Product: ProductScreen
-    })
-  },
-  );
+  // Le stack utilise le bouton "Précédent" du téléphone
+  LoginFlow: createStackNavigator({
+    Home: HomeScreen,
+    Parameter: ParameterScreen,
+    ChoiceAuth: ChoiceAuthScreen,
+    SignUp: SignUpScreen,
+    SignIn: SignInScreen,
+    Profil: ProfilScreen,
+    Scanner: ScannerScreen,
+    Search: SearchScreen,
+    Favorite: FavoriteScreen,
+    History: HistoryScreen,
+    Product: ProductScreen,
+  }),
+});
 
 const App = createAppContainer(switchNavigator);
 
 export default () => {
-   return (
-     <AuthProvider>
-
-     <App
-     ref={(navigator) => {
-       setNavigator(navigator);
-      }}>
-        </App>
-      </AuthProvider>
+  return (
+    <AuthProvider>
+      <App
+        ref={(navigator) => {
+          setNavigator(navigator);
+        }}
+      ></App>
+    </AuthProvider>
   );
 };
