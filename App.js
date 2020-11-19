@@ -16,12 +16,14 @@ import ProfilScreen from "./src/screen/profilScreen";
 import { Provider as AuthProvider } from "./src/context/authContext";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
+
 // Custom theme pour react nativ paper
 const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
     primary: "#488EED",
+
   },
 };
 
@@ -29,12 +31,14 @@ const theme = {
 let naviguationOptionHome = {
   title: "",
   headerTransparent: "true",
+  
 };
 
 // Custom header des autres pages pour n'afficher que le boutton de naviguation
 let naviguationOptionScreen = {
   title: "",
   headerTransparent: "true",
+  headerTintColor: "#488EED",
 };
 
 // Switch est un site map simple "squelette de l'app"

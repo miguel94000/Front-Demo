@@ -1,17 +1,27 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Text, View, StyleSheet, AsyncStorage } from "react-native";
+import React, { useState, useContext } from "react";
+import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
 import { TextInput, Button } from "react-native-paper";
-import { color } from "react-native-reanimated";
 import { Context as AuthContext } from "../context/authContext";
 
-const SignInScreen = () => {
+const SignInScreen = ({ navigation }) => {
   const { signIn } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loadButton, setLoadButton] = useState(false);
 
+  const goSignIn = () => {
+    setTimeout(() => {
+      signIn({ email, password });
+      setLoadButton(false);
+    }, 1000);
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.titre}>Acceder{"\n"}à votre profil</Text>
+      <Image
+        style={styles.logo_app}
+        source={require("../../assets/logo.png")}
+      />
       <View style={styles.textInput_container}>
         <TextInput
           mode="outlined"
@@ -19,7 +29,7 @@ const SignInScreen = () => {
           label="Email"
           value={email}
           onChangeText={(value) => setEmail(value)}
-          />
+        />
 
         <TextInput
           mode="outlined"
@@ -29,14 +39,34 @@ const SignInScreen = () => {
           value={password}
           onChangeText={(value) => setPassword(value)}
         />
+        <TouchableOpacity style={styles.pwd_Forget_Button}>
+          <Text style={styles.pwd_Forget_Text_Button}>
+            Mot de passe oublié ?
+          </Text>
+        </TouchableOpacity>
       </View>
-        <Text style={styles.pwdForget}>Mot de passe oublié ?</Text>
-      <Button color="#488EED" onPress={() => signIn({ email, password })}>
+      <Button
+        style={styles.connexionButton}
+        color="white"
+        loading={loadButton}
+        // onPress={() => goSignIn()}
+        onPress={() => {
+          setLoadButton(true);
+          goSignIn()
+        }}
+      >
+        {console.log(loadButton)}
         <Text>Se connecter</Text>
       </Button>
-      <Text>
-        Vous n'avez pas de compte ? <Button>inscrivez vous</Button>
-      </Text>
+      <View style={styles.go_signUp_container}>
+        <Text>Vous n'avez pas de compte ? </Text>
+        <TouchableOpacity
+          style={styles.go_SignUp_Button}
+          onPress={() => navigation.navigate("SignUp")}
+        >
+          <Text style={styles.go_SignUp_Button_Text}>inscrivez vous</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -55,17 +85,47 @@ const styles = StyleSheet.create({
     color: "#488EED",
     textAlign: "center",
   },
+  logo_app: {
+    alignSelf: "center",
+    width: "20%",
+    height: "9%",
+    resizeMode: "stretch",
+  },
   textInput_container: {
-    height: "18%",
+    height: "30%",
     alignItems: "center",
-    justifyContent:"space-between"
   },
   textInput: {
     width: "85%",
+    margin: 15,
   },
-  pwdForget:{
-    backgroundColor:"yellow",
-    justifyContent:"flex-end"
+  pwd_Forget_Button: {
+    width: "45%",
+    alignSelf: "flex-end",
+    marginRight: 27,
+  },
+  pwd_Forget_Text_Button: {
+    fontWeight: "bold",
+    color: "#488EED",
+  },
+  connexionButton: {
+    backgroundColor: "#488EED",
+    paddingTop: 10,
+    alignSelf: "center",
+    height: 70,
+    width: 300,
+  },
+  go_signUp_container: {
+    flexDirection: "row",
+    alignSelf: "center",
+    marginBottom: 10,
+  },
+  go_SignUp_Button: {
+    width: "30%",
+  },
+  go_SignUp_Button_Text: {
+    fontWeight: "bold",
+    color: "#488EED",
   },
 });
 export default SignInScreen;

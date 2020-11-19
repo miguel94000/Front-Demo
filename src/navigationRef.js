@@ -2,6 +2,7 @@ import { NavigationActions } from "react-navigation";
 
 let navigator;
 
+// Permet la navigation à partir du context
 export const setNavigator = (nav) => {
   navigator = nav;
 };

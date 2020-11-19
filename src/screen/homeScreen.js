@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Text, View, StyleSheet, AsyncStorage } from "react-native";
+import { Text, Image, View, StyleSheet, AsyncStorage } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import IconFont from "react-native-vector-icons/FontAwesome";
 import { Button } from "react-native-paper";
@@ -42,10 +42,10 @@ const HomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.param_button_container}>
         <Button
-        color="grey"
+          color="grey"
           style={styles.param_button}
           onPress={() => navigation.navigate("Parameter")}
-          >
+        >
           <Icon name="settings" size={20} color="#488EED" />
         </Button>
         <Button
@@ -56,7 +56,11 @@ const HomeScreen = ({ navigation }) => {
           <IconFont name="user" size={20} color={"#488EED"} />
         </Button>
       </View>
-      <Text style={styles.titre_app}>SCAN PRODUIT 2000</Text>
+      {/* <Text style={styles.titre_app}>SCAN PRODUIT 2000</Text> */}
+      <Image
+        style={styles.logo_app}
+        source={require("../../assets/logo.png")}
+      />
       <View style={styles.menu_button_container}>
         <BoutonMenuAccueil linkValue={() => navigation.navigate("Scanner")}>
           <Text>Scanner un produit</Text>
@@ -88,19 +92,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 70,
-    marginTop:45,
-    zIndex:1,
+    marginTop: 45,
+    zIndex: 1,
   },
   param_button: {
     width: 0,
   },
-        titre_app: {
-          flexGrow: 1,
-          textAlign: "center",
-          textTransform: "uppercase",
-          fontWeight: "bold",
-          fontSize: 30,
-        },
+  logo_app: {
+    alignSelf:"center",
+    width:"20%",
+    height:"9%",
+    resizeMode:"stretch",
+    marginBottom:20,
+  },
   menu_button_container: {
     alignItems: "center",
     justifyContent: "space-around",
@@ -118,6 +122,5 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
 });
-
 
 export default HomeScreen;
