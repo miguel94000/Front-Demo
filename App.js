@@ -14,21 +14,50 @@ import ChoiceAuthScreen from "./src/screen/choiceAuthScreen";
 import ProductScreen from "./src/screen/productScreen";
 import ProfilScreen from "./src/screen/profilScreen";
 import { Provider as AuthProvider } from "./src/context/authContext";
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
-import BottomBar from "./src/tools/bottonBar";
+// Custom theme pour react nativ paper
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "#488EED",
+  },
+};
+
+// Custom header pour la home
+let naviguationOptionHome = {
+  title: "",
+  headerTransparent: "true",
+};
+
+// Custom header des autres pages pour n'afficher que le boutton de naviguation
+let naviguationOptionScreen = {
+  title: "",
+  headerTransparent: "true",
+};
 
 // Switch est un site map simple "squelette de l'app"
 const switchNavigator = createSwitchNavigator({
   // Le stack utilise le bouton "Précédent" du téléphone
-  //BottomFlow: BottomBar,
-
-  // Le stack utilise le bouton "Précédent" du téléphone
   LoginFlow: createStackNavigator({
-    Home: HomeScreen,
-    Parameter: ParameterScreen,
+    Home: {
+      screen: HomeScreen,
+      navigationOptions: () => naviguationOptionHome,
+    },
+    Parameter: {
+      screen: ParameterScreen,
+      navigationOptions: () => naviguationOptionScreen,
+    },
     ChoiceAuth: ChoiceAuthScreen,
-    SignUp: SignUpScreen,
-    SignIn: SignInScreen,
+    SignUp: {
+      screen: SignUpScreen,
+      navigationOptions: () => naviguationOptionScreen,
+    },
+    SignIn: {
+      screen: SignInScreen,
+      navigationOptions: () => naviguationOptionScreen,
+    },
     Profil: ProfilScreen,
     Scanner: ScannerScreen,
     Search: SearchScreen,
@@ -43,11 +72,13 @@ const App = createAppContainer(switchNavigator);
 export default () => {
   return (
     <AuthProvider>
-      <App
-        ref={(navigator) => {
-          setNavigator(navigator);
-        }}
-      ></App>
+      <PaperProvider theme={theme}>
+        <App
+          ref={(navigator) => {
+            setNavigator(navigator);
+          }}
+        ></App>
+      </PaperProvider>
     </AuthProvider>
   );
 };

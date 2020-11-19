@@ -42,16 +42,18 @@ const HomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.param_button_container}>
         <Button
+        color="grey"
           style={styles.param_button}
           onPress={() => navigation.navigate("Parameter")}
-        >
+          >
           <Icon name="settings" size={20} color="#488EED" />
         </Button>
         <Button
+          color="grey"
           style={styles.param_button}
           onPress={() => isToken({ navigation }, "Profil")}
         >
-          <IconFont name="user" size={20} color="#488EED" />
+          <IconFont name="user" size={20} color={"#488EED"} />
         </Button>
       </View>
       <Text style={styles.titre_app}>SCAN PRODUIT 2000</Text>
@@ -86,17 +88,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 70,
-  },
-  titre_app: {
-    flexGrow: 1,
-    textAlign: "center",
-    textTransform: "uppercase",
-    fontWeight: "bold",
-    fontSize: 30,
+    marginTop:45,
+    zIndex:1,
   },
   param_button: {
     width: 0,
   },
+        titre_app: {
+          flexGrow: 1,
+          textAlign: "center",
+          textTransform: "uppercase",
+          fontWeight: "bold",
+          fontSize: 30,
+        },
   menu_button_container: {
     alignItems: "center",
     justifyContent: "space-around",
@@ -114,4 +118,6 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
 });
+
+
 export default HomeScreen;

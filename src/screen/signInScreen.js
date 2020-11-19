@@ -14,21 +14,23 @@ const SignInScreen = () => {
       <Text style={styles.titre}>Acceder{"\n"}à votre profil</Text>
       <View style={styles.textInput_container}>
         <TextInput
+          mode="outlined"
           style={styles.textInput}
           label="Email"
           value={email}
           onChangeText={(value) => setEmail(value)}
-        />
+          />
 
         <TextInput
+          mode="outlined"
           style={styles.textInput}
-          label="Password"
+          label="Mote de passe"
           secureTextEntry={true}
           value={password}
           onChangeText={(value) => setPassword(value)}
         />
-        <Text>Mot de passe oublié ?</Text>
       </View>
+        <Text style={styles.pwdForget}>Mot de passe oublié ?</Text>
       <Button color="#488EED" onPress={() => signIn({ email, password })}>
         <Text>Se connecter</Text>
       </Button>
@@ -54,11 +56,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   textInput_container: {
-    height: "20%",
+    height: "18%",
     alignItems: "center",
+    justifyContent:"space-between"
   },
   textInput: {
     width: "85%",
+  },
+  pwdForget:{
+    backgroundColor:"yellow",
+    justifyContent:"flex-end"
   },
 });
 export default SignInScreen;
