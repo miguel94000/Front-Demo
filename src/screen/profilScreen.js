@@ -1,9 +1,14 @@
 import React, { useContext, useState } from "react";
-import { Avatar } from "react-native-elements";
-import { Text, View, StyleSheet, AsyncStorage } from "react-native";
+import { Avatar, Accessory } from "react-native-elements";
+import {
+  Text,
+  TextInput as TextInput2,
+  View,
+  StyleSheet,
+  AsyncStorage,
+} from "react-native";
 import { Context as AuthContext } from "../context/authContext";
 import { Button, RadioButton, TextInput, Modal } from "react-native-paper";
-import Icon from "react-native-vector-icons/FontAwesome";
 import UploadPics from "../tools/ajoutImage";
 
 const ProfilScreen = ({ navigation }) => {
@@ -25,14 +30,16 @@ const ProfilScreen = ({ navigation }) => {
   const [instagram, setInstagram] = React.useState(state.profil.instagram);
   const [twitter, setTwitter] = React.useState(state.profil.twitter);
   const [website, setWebsite] = React.useState(state.profil.website);
+  const [loadButton, setLoadButton] = useState(false);
+  const [activedButton, setActivedButton] = useState(false);
+
   const [description, setDescription] = React.useState(
     state.profil.description
   );
-  
-  function loadAvatar () {
+
+  function loadAvatar() {
     setAvatar(state.profil.avatar);
   }
-
 
   //Cinématique de déconnexion
   const deconnexion = async () => {
@@ -59,6 +66,26 @@ const ProfilScreen = ({ navigation }) => {
       : setshowUpdateButton(false);
   };
 
+  // Cinématique lors de sauvegarde du profil
+  const saveButton = () => {
+    setLoadButton(true);
+    setActivedButton(true);
+    saveChangesProfil({
+      pseudo,
+      sexe,
+      facebook,
+      instagram,
+      twitter,
+      website,
+      description,
+      token,
+    });
+    setTimeout(() => {
+      setshowUpdateButton(false);
+      setLoadButton(false);
+      setActivedButton(false);
+    }, 3000);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.identity_container}>
@@ -70,17 +97,15 @@ const ProfilScreen = ({ navigation }) => {
             }}
             style={styles.avatar_pics}
           />
-
-          <Button
-            style={styles.avatar_button}
+          <Accessory
             onPress={() => setShowUploadPicsButton(true)}
-            
-          >
-            <Icon name="pencil" size={13} color="#fff" />
-          </Button>
+            style={styles.avatar_button}
+            color="white"
+            size={30}
+          />
         </View>
         <View style={styles.infos_container}>
-          <TextInput
+          <TextInput2
             style={styles.pseudo_text}
             value={pseudo}
             onChangeText={(pseudo) => {
@@ -88,9 +113,9 @@ const ProfilScreen = ({ navigation }) => {
               checkTextInput(pseudo, "pseudo");
             }}
           />
-          <View>
+          <View style={styles.sexe_button_container}>
             <RadioButton.Item
-              color="red"
+              color="#488EED"
               label="Femme"
               value="Femme"
               status={sexe === "Femme" ? "checked" : "unchecked"}
@@ -100,7 +125,7 @@ const ProfilScreen = ({ navigation }) => {
               }}
             />
             <RadioButton.Item
-              color="red"
+              color="#488EED"
               label="Homme"
               value="Homme"
               status={sexe === "Homme" ? "checked" : "unchecked"}
@@ -163,34 +188,35 @@ const ProfilScreen = ({ navigation }) => {
           }}
         />
       </View>
-      {showUpdateButton || state.status != 200 ? (
+      {showUpdateButton ? (
         <View style={styles.validationButton_container}>
-          <Button style={styles.annuler_button} onPress={() => annuler()}>
+          <Button
+            style={styles.annuler_button}
+            disabled={activedButton}
+            onPress={() => annuler()}
+          >
             <Text>annuler</Text>
           </Button>
           <Button
             style={styles.sauvegarder_button}
-            onPress={() => {
-              saveChangesProfil({
-                pseudo,
-                sexe,
-                facebook,
-                instagram,
-                twitter,
-                website,
-                description,
-                token,
-              });
-              setshowUpdateButton(false);
-            }}
+            color="white"
+            loading={loadButton}
+            disabled={activedButton}
+            onPress={() => saveButton()}
           >
             <Text>sauvegarder</Text>
           </Button>
         </View>
-      ) : null}
-      <Button style={styles.deconnexion_button} onPress={() => deconnexion()}>
-        <Text>Deconnexion</Text>
-      </Button>
+      ) : (
+        <Button
+          color="white"
+          style={styles.deconnexion_button}
+          onPress={() => deconnexion()}
+        >
+          <Text>Deconnexion</Text>
+        </Button>
+      )}
+
       <Modal
         visible={showUploadPicsButton}
         onDismiss={() => {
@@ -207,78 +233,80 @@ const ProfilScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "grey",
+    flex: 1,
     justifyContent: "space-between",
+    backgroundColor: "white",
+    paddingHorizontal: 10,
+    paddingBottom: 10,
   },
   identity_container: {
-    backgroundColor: "pink",
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 10,
   },
   avatar_container: {
     width: "30%",
     height: 190,
-    padding: 10,
   },
   avatar_pics: {
     height: "100%",
+    borderWidth: 4,
+    padding: 1,
+    borderRadius: 20,
+    borderColor: "#488EED",
   },
   avatar_button: {
-    position: "absolute",
-    backgroundColor: "blue",
-    left: -20,
+    backgroundColor: "#488EED",
   },
-  avatar_modal: {
-    backgroundColor: "white",
-    padding: 20,
-  },
+  avatar_modal: {},
   infos_container: {
-    backgroundColor: "blue",
     width: "67%",
+    justifyContent: "space-between",
   },
   pseudo_text: {
     fontWeight: "bold",
+    textAlign: "center",
+    textTransform: "capitalize",
     fontSize: 20,
+    paddingBottom: 10,
     margin: 10,
+    borderBottomWidth: 1,
+    borderColor: "#488EED",
   },
-  sexe_button: {
-    fontWeight: "bold",
-    fontSize: 20,
-    margin: 10,
-    backgroundColor: "red",
-  },
+  sexe_button_container: {},
   description_text: {
-    color: "#666666",
-    backgroundColor: "grey",
+    marginTop: 5,
   },
-  network_container: {},
+  network_container: {
+    justifyContent: "space-between",
+    height: "40%",
+  },
   network_text: {
-    margin: 10,
-  },
-  deconnexion_button: {
     backgroundColor: "white",
-    bottom: 0,
-    width: "100%",
-    padding: 10,
-    alignItems: "center",
   },
   validationButton_container: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 10,
-  },
-  sauvegarder_button: {
-    backgroundColor: "white",
-    padding: 10,
-    width: "60%",
+    justifyContent: "space-between",
+    marginBottom: 40,
+    height: 60,
+    paddingHorizontal: 20,
   },
   annuler_button: {
+    borderColor: "#488EED",
+    borderRadius: 10,
+    borderWidth: 1,
     backgroundColor: "white",
-    padding: 10,
-    width: "35%",
+    paddingTop: 6,
+  },
+  sauvegarder_button: {
+    backgroundColor: "#488EED",
+    paddingTop: 6,
+  },
+  deconnexion_button: {
+    backgroundColor: "#488EED",
+    marginBottom: 40,
+    paddingTop: 6,
+    height: 60,
+    marginHorizontal: 40,
   },
 });
 export default ProfilScreen;

@@ -6,11 +6,11 @@ import { Button } from "react-native-paper";
 import { Context as AuthContext } from "../context/authContext";
 
 // Choix des fenetres de connexion en fonction du token
-const isToken = async ({ navigation, buttonName }) => {
+const isToken = async ({ navigation }, buttonName) => {
   const token = await AsyncStorage.getItem("token");
   token == null
     ? navigation.navigate("SignIn")
-    : navigation.navigate({ buttonName });
+    : navigation.navigate(buttonName);
 };
 
 // Bouton d'acceuil
@@ -27,15 +27,20 @@ const BoutonMenuAccueil = ({ children, linkValue }) => {
 };
 
 const HomeScreen = ({ navigation }) => {
-  const { getUserProfil } = useContext(AuthContext);
+  const { state, getUserProfil } = useContext(AuthContext);
 
   // Vérification du token pour recontruire le State
   useEffect(() => {
     const getToken = async () => {
-      const token = await AsyncStorage.getItem("token");
-      token === null ? null : getUserProfil({ token });
+      console.log("ESPECE")
+      if (!state) {
+        console.log("JE COMMENCE :");
+        const token = await AsyncStorage.getItem("token");
+        token === null ? null : getUserProfil({ token });
+      }
     };
     getToken();
+    // console.log("State ")
   }, []);
 
   return (
@@ -99,11 +104,11 @@ const styles = StyleSheet.create({
     width: 0,
   },
   logo_app: {
-    alignSelf:"center",
-    width:"20%",
-    height:"9%",
-    resizeMode:"stretch",
-    marginBottom:20,
+    alignSelf: "center",
+    width: "20%",
+    height: "9%",
+    resizeMode: "stretch",
+    marginBottom: 20,
   },
   menu_button_container: {
     alignItems: "center",

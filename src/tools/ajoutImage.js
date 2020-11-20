@@ -1,14 +1,14 @@
 import React, { useContext, useState } from "react";
 import { Button, Text } from "react-native-paper";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Context as AuthContext } from "../context/authContext";
 
 const UploadPics = (loadAvatar) => {
-  const { state, saveAvatarProfil} = useContext(AuthContext);
-  
-  function pickLoad(){
-    loadAvatar.loadAvatar()
+  const { state, saveAvatarProfil } = useContext(AuthContext);
+
+  function pickLoad() {
+    loadAvatar.loadAvatar();
   }
   // Recherche à partir de la gallerie
 
@@ -18,12 +18,12 @@ const UploadPics = (loadAvatar) => {
       allowsEditing: true,
       aspect: [2, 3],
       base64: true,
-      quality:0
+      quality: 0,
     });
     if (!result.cancelled) {
       const avatar = await result.base64;
-      const token =  state.token
-      saveAvatarProfil({avatar, token});
+      const token = state.token;
+      saveAvatarProfil({ avatar, token });
     }
   };
 
@@ -34,27 +34,18 @@ const UploadPics = (loadAvatar) => {
       allowsEditing: true,
       aspect: [2, 3],
       base64: true,
-      quality: 0
+      quality: 0,
     });
     if (!result.cancelled) {
       const avatar = await result.base64;
-      const token =  state.token
-      saveAvatarProfil({avatar, token});
+      const token = state.token;
+      saveAvatarProfil({ avatar, token });
     }
   };
 
   return (
-    <View>
-      <Text
-        style={{
-          marginBottom: 25,
-          fontWeight: "bold",
-          textTransform: "uppercase",
-          alignSelf: "center",
-        }}
-      >
-        Ajouter une photo
-      </Text>
+    <View style={styles.container}>
+      <Text style={styles.titre_text}>Ajouter une photo</Text>
       <View
         style={{
           alignItems: "stretch",
@@ -64,25 +55,17 @@ const UploadPics = (loadAvatar) => {
       >
         <Button
           icon="camera"
-          mode="contained"
-          title="Appareil Photo"
+          color="white"
+          style={styles.pick_button}
           onPress={pickCam}
         >
           Appareil Photo
         </Button>
         <Button
           icon="upload"
-          mode="contained"
-          title="Galerie"
+          color="white"
+          style={styles.pick_button}
           onPress={pickGallery}
-        >
-          Galerie
-        </Button>
-        <Button
-          icon="circle"
-          mode="contained"
-          title="Galerie"
-          onPress={() =>pickLoad()}
         >
           Galerie
         </Button>
@@ -90,5 +73,27 @@ const UploadPics = (loadAvatar) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container:{
+    paddingHorizontal: 10,
+  },
+  titre_text: {
+    color: "white",
+    fontSize: 25,
+    marginBottom: 15,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    alignSelf: "center",
+  },
+  pick_button: {
+    backgroundColor: "#488EED",
+    marginVertical: 10,
+    marginHorizontal:50,
+    height:80,
+    paddingTop:15
+
+  },
+});
 
 export default UploadPics;

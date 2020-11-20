@@ -16,14 +16,14 @@ import ProfilScreen from "./src/screen/profilScreen";
 import { Provider as AuthProvider } from "./src/context/authContext";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
-
 // Custom theme pour react nativ paper
 const theme = {
   ...DefaultTheme,
+  roundness: 10,
+
   colors: {
     ...DefaultTheme.colors,
     primary: "#488EED",
-
   },
 };
 
@@ -31,13 +31,16 @@ const theme = {
 let naviguationOptionHome = {
   title: "",
   headerTransparent: "true",
-  
 };
 
 // Custom header des autres pages pour n'afficher que le boutton de naviguation
 let naviguationOptionScreen = {
   title: "",
-  headerTransparent: "true",
+  headerStyle: {
+    backgroundColor: "white",
+    shadowColor: 'transparent', // For IOS
+    elevation:0, // For Android
+  },
   headerTintColor: "#488EED",
 };
 
@@ -62,7 +65,10 @@ const switchNavigator = createSwitchNavigator({
       screen: SignInScreen,
       navigationOptions: () => naviguationOptionScreen,
     },
-    Profil: ProfilScreen,
+    Profil: {
+      screen: ProfilScreen,
+      navigationOptions: () => naviguationOptionScreen,
+    },
     Scanner: ScannerScreen,
     Search: SearchScreen,
     Favorite: FavoriteScreen,

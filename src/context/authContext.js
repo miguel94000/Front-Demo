@@ -23,6 +23,7 @@ export const authReducer = (state, action) => {
         ...state,
         token: action.token,
         profil: action.profil,
+        ok: action.ok,
       };
     case "save_avatar_profil":
       return {
@@ -131,14 +132,15 @@ const getUserProfil = (dispatch) => async ({ token }) => {
     const response = await apiConnectBack.get("/get_user_profil", {
       params: { token },
     });
-
     dispatch({
       type: "get_user_profil",
       token: response.data.token,
       user: response.data.user,
       status: response.status,
+      ok: response.ok,
       profil: response.data.userProfil,
     });
+    console.log("voila le token :", response.ok)
   } catch (erreur) {
     alertTool(erreur.response.data.error);
   }

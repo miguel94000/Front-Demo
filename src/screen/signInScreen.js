@@ -8,12 +8,14 @@ const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loadButton, setLoadButton] = useState(false);
+  const [activedButton, setActivedButton] = useState(false);
 
   const goSignIn = () => {
     setTimeout(() => {
       signIn({ email, password });
       setLoadButton(false);
-    }, 1000);
+      setActivedButton(false);
+    }, 3000);
   };
   return (
     <View style={styles.container}>
@@ -30,7 +32,6 @@ const SignInScreen = ({ navigation }) => {
           value={email}
           onChangeText={(value) => setEmail(value)}
         />
-
         <TextInput
           mode="outlined"
           style={styles.textInput}
@@ -48,14 +49,14 @@ const SignInScreen = ({ navigation }) => {
       <Button
         style={styles.connexionButton}
         color="white"
+        disabled={activedButton}
         loading={loadButton}
-        // onPress={() => goSignIn()}
         onPress={() => {
+          setActivedButton(true)
           setLoadButton(true);
           goSignIn()
         }}
       >
-        {console.log(loadButton)}
         <Text>Se connecter</Text>
       </Button>
       <View style={styles.go_signUp_container}>
@@ -75,13 +76,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
+    backgroundColor:"white",
   },
-
   titre: {
     fontWeight: "bold",
     textTransform: "uppercase",
     fontSize: 25,
-    marginTop: 150,
+    marginTop: 10,
     color: "#488EED",
     textAlign: "center",
   },
@@ -128,4 +129,5 @@ const styles = StyleSheet.create({
     color: "#488EED",
   },
 });
+
 export default SignInScreen;
