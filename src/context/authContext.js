@@ -17,7 +17,13 @@ export const authReducer = (state, action) => {
         user: action.user,
         profil: action.profil,
       };
-
+    case "signUp":
+      return {
+        token: action.token,
+        status: action.status,
+        user: action.user,
+        profil: action.profil,
+      };
     case "get_user_profil":
       return {
         ...state,
@@ -65,6 +71,28 @@ const signIn = (dispatch) => async ({ email, password }) => {
       profil: response.data.userProfil,
     });
     navigate("Home");
+  } catch (erreur) {
+    alertTool(erreur.response.data.error);
+  }
+};
+
+// Inscription
+const signUp = (dispatch) => async ({ pseudo, email, password }) => {
+  // Appel Back en utilisant l'asyn await
+  try {
+    const response = await apiConnectBack.post("/signup", {
+      pseudo,
+      email,
+      password,
+    });
+    await AsyncStorage.setItem("token", response.data.token); // possibilité de le stoker en interne
+    dispatch({
+      type: "signUp",
+      token: response.data.token,
+      user: response.data.user,
+      status: response.status,
+      profil: response.data.userProfil,
+    });
   } catch (erreur) {
     alertTool(erreur.response.data.error);
   }
@@ -132,6 +160,7 @@ const getUserProfil = (dispatch) => async ({ token }) => {
     const response = await apiConnectBack.get("/get_user_profil", {
       params: { token },
     });
+    console.log("La réponse :", response);
     dispatch({
       type: "get_user_profil",
       token: response.data.token,
@@ -140,7 +169,7 @@ const getUserProfil = (dispatch) => async ({ token }) => {
       ok: response.ok,
       profil: response.data.userProfil,
     });
-    console.log("voila le token :", response.ok)
+    console.log("voila le token :", response.ok);
   } catch (erreur) {
     alertTool(erreur.response.data.error);
   }
@@ -148,6 +177,7 @@ const getUserProfil = (dispatch) => async ({ token }) => {
 
 export const { Provider, Context } = createDataContext(authReducer, {
   signIn,
+  signUp,
   getUserProfil,
   saveChangesProfil,
   saveAvatarProfil,

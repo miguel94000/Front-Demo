@@ -35,7 +35,7 @@ const SignInScreen = ({ navigation }) => {
         <TextInput
           mode="outlined"
           style={styles.textInput}
-          label="Mote de passe"
+          label="Mot de passe"
           secureTextEntry={true}
           value={password}
           onChangeText={(value) => setPassword(value)}
@@ -47,7 +47,7 @@ const SignInScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <Button
-        style={styles.connexionButton}
+        style={styles.connexion_Button}
         color="white"
         disabled={activedButton}
         loading={loadButton}
@@ -60,7 +60,7 @@ const SignInScreen = ({ navigation }) => {
         <Text>Se connecter</Text>
       </Button>
       <View style={styles.go_signUp_container}>
-        <Text>Vous n'avez pas de compte ? </Text>
+        <Text>Pas de compte ? </Text>
         <TouchableOpacity
           style={styles.go_SignUp_Button}
           onPress={() => navigation.navigate("SignUp")}
@@ -77,6 +77,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     backgroundColor:"white",
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   titre: {
     fontWeight: "bold",
@@ -93,23 +95,20 @@ const styles = StyleSheet.create({
     resizeMode: "stretch",
   },
   textInput_container: {
-    height: "30%",
-    alignItems: "center",
+    justifyContent: "space-between",
+    height: "27%",
   },
   textInput: {
-    width: "85%",
-    margin: 15,
   },
   pwd_Forget_Button: {
-    width: "45%",
+    width: "50%",
     alignSelf: "flex-end",
-    marginRight: 27,
   },
   pwd_Forget_Text_Button: {
     fontWeight: "bold",
     color: "#488EED",
   },
-  connexionButton: {
+  connexion_Button: {
     backgroundColor: "#488EED",
     paddingTop: 10,
     alignSelf: "center",
@@ -119,10 +118,9 @@ const styles = StyleSheet.create({
   go_signUp_container: {
     flexDirection: "row",
     alignSelf: "center",
-    marginBottom: 10,
   },
   go_SignUp_Button: {
-    width: "30%",
+    width: "35%",
   },
   go_SignUp_Button_Text: {
     fontWeight: "bold",

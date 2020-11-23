@@ -36,6 +36,7 @@ const HomeScreen = ({ navigation }) => {
       if (!state) {
         console.log("JE COMMENCE :");
         const token = await AsyncStorage.getItem("token");
+        console.log("Token :", token)
         token === null ? null : getUserProfil({ token });
       }
     };
