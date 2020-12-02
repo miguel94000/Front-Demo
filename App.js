@@ -13,6 +13,8 @@ import FavoriteScreen from "./src/screen/favoriteScreen";
 import ChoiceAuthScreen from "./src/screen/choiceAuthScreen";
 import ProductScreen from "./src/screen/productScreen";
 import ProfilScreen from "./src/screen/profilScreen";
+import ChangePwdScreen from "./src/screen/changePwdScreen";
+import RestorePasswordScreen from "./src/screen/restorePasswordScreen";
 import { Provider as AuthProvider } from "./src/context/authContext";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
@@ -38,8 +40,19 @@ let naviguationOptionScreen = {
   title: "",
   headerStyle: {
     backgroundColor: "white",
-    shadowColor: 'transparent', // For IOS
-    elevation:0, // For Android
+    shadowColor: "transparent", // For IOS
+    elevation: 0, // For Android
+  },
+  headerTintColor: "#488EED",
+};
+
+// Pour le scanner
+let naviguationOptionScanScreen = {
+  title: "",
+  headerStyle: {
+    backgroundColor: "transparent",
+    shadowColor: "transparent", // For IOS
+    elevation: 0, // For Android
   },
   headerTintColor: "#488EED",
 };
@@ -69,11 +82,26 @@ const switchNavigator = createSwitchNavigator({
       screen: ProfilScreen,
       navigationOptions: () => naviguationOptionScreen,
     },
-    Scanner: ScannerScreen,
+    ChangePwd: {
+      screen: ChangePwdScreen,
+      navigationOptions: () => naviguationOptionScreen,
+    },
+    RestorePassword: {
+      screen: RestorePasswordScreen,
+      navigationOptions: () => naviguationOptionScreen,
+    },
+    Scanner: {
+      screen: ScannerScreen,
+      navigationOptions: () => naviguationOptionScanScreen,
+    },
+    Product: {
+      screen: ProductScreen,
+      navigationOptions: () => naviguationOptionScanScreen,
+    },
+
     Search: SearchScreen,
     Favorite: FavoriteScreen,
     History: HistoryScreen,
-    Product: ProductScreen,
   }),
 });
 

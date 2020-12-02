@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   titre: {
     fontWeight: "bold",
     textTransform: "uppercase",
-    fontSize: 25,
+    fontSize: 35,
     marginTop: 10,
     color: "#488EED",
     textAlign: "center",
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   textInput: {},
   connexion_Button: {
     backgroundColor: "#488EED",
-    paddingTop: 10,
+    paddingTop: 15,
     alignSelf: "center",
     height: 70,
     width: 300,
@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   go_SignIn_Button: {
-    width: "30%",
   },
   go_SignIn_Button_Text: {
     fontWeight: "bold",

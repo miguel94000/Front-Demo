@@ -10,6 +10,7 @@ import {
 import { Context as AuthContext } from "../context/authContext";
 import { Button, RadioButton, TextInput, Modal } from "react-native-paper";
 import UploadPics from "../tools/ajoutImage";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const ProfilScreen = ({ navigation }) => {
   // Appel du state pour remplir le profil
@@ -113,6 +114,11 @@ const ProfilScreen = ({ navigation }) => {
               checkTextInput(pseudo, "pseudo");
             }}
           />
+          <TouchableOpacity style={styles.change_Pwd_Button}
+           onPress={() => { navigation.navigate("ChangePwd");}}
+          >
+            <Text style={styles.change_Pwd_Text_Button}>Changer de mot de passe</Text>
+          </TouchableOpacity>
           <View style={styles.sexe_button_container}>
             <RadioButton.Item
               color="#488EED"
@@ -272,6 +278,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#488EED",
   },
+  change_Pwd_Button:{
+    alignSelf:"center",
+  },
+  change_Pwd_Text_Button:{
+    fontWeight:"bold",
+    color:"#488EED",
+    fontSize:10,
+    textTransform:"uppercase",
+  },
   sexe_button_container: {},
   description_text: {
     marginTop: 5,
@@ -295,16 +310,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     backgroundColor: "white",
-    paddingTop: 6,
+    paddingTop: 10,
   },
   sauvegarder_button: {
     backgroundColor: "#488EED",
-    paddingTop: 6,
+    paddingTop: 10,
   },
   deconnexion_button: {
     backgroundColor: "#488EED",
     marginBottom: 40,
-    paddingTop: 6,
+    paddingTop: 10,
     height: 60,
     marginHorizontal: 40,
   },

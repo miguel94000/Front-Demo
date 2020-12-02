@@ -3,6 +3,7 @@ import apiConnectBack from "../../API/apiConnectBack";
 import { AsyncStorage } from "react-native";
 import alertTool from "../tools/alertTool";
 import { navigate } from "../navigationRef";
+import apiOpenFact from "../../API/APIOpenFactFood";
 
 /*
 Etat du state dans cette ordre: Avatar, UseridProfil, UserIdUser, Sexe, Facebook, Instagram, Twitter, Website, Description
@@ -24,12 +25,18 @@ export const authReducer = (state, action) => {
         user: action.user,
         profil: action.profil,
       };
+    case "changePwd":
+      return {
+        ...state,
+        token: action.token,
+        status: action.status,
+      };
     case "get_user_profil":
       return {
         ...state,
         token: action.token,
+        status: action.status,
         profil: action.profil,
-        ok: action.ok,
       };
     case "save_avatar_profil":
       return {
@@ -44,6 +51,17 @@ export const authReducer = (state, action) => {
         token: action.token,
         status: action.status,
         profil: action.profil,
+      };
+    case "restore_password":
+      return {
+        ...state,
+      };
+
+    // Partie: Produit
+    case "search_product":
+      return {
+        ...state,
+        product: action.product,
       };
     default:
       return state;
@@ -154,24 +172,76 @@ const saveAvatarProfil = (dispatch) => async ({ avatar, token }) => {
   }
 };
 
+// Mettre à jour le mot de passe
+const changePwd = (dispatch) => async ({ oldPassword, newPassword, token }) => {
+  // Appel Back en utilisant l'asyn await
+  try {
+    const response = await apiConnectBack.post("/passwordupdate", {
+      oldPassword,
+      newPassword,
+      token,
+    });
+    dispatch({
+      type: "changePwd",
+      token: response.data.token,
+      status: response.status,
+    });
+  } catch (erreur) {
+    alertTool(erreur.response.data.error);
+  }
+  console.log("OUIII");
+  return true;
+};
+
 // Récupérer Information profil car si app fermer state détruit via un GET avec AXIOS
 const getUserProfil = (dispatch) => async ({ token }) => {
   try {
     const response = await apiConnectBack.get("/get_user_profil", {
       params: { token },
     });
-    console.log("La réponse :", response);
     dispatch({
       type: "get_user_profil",
       token: response.data.token,
       user: response.data.user,
       status: response.status,
-      ok: response.ok,
       profil: response.data.userProfil,
     });
-    console.log("voila le token :", response.ok);
   } catch (erreur) {
     alertTool(erreur.response.data.error);
+  }
+};
+
+// Réinitialise le mot de passe
+const restorePwd = (dispatch) => async ({ email }) => {
+  try {
+    const response = await apiConnectBack.post("/restore_password", {
+      token,
+    });
+    dispatch({
+      type: "restore_password",
+      status: response.status,
+    });
+  } catch (erreur) {
+    alertTool(erreur.response.data.error);
+  }
+};
+
+// Recherche un produit via l'API
+const searchProduct = (dispatch) => async ( data ) => {
+  try {
+    const response = await apiOpenFact.post(data,".json");
+    if(response.data.status == "0"){
+      return false;
+    }
+
+    dispatch({
+      type: "search_product",
+      product: response.data,
+    });
+    return true
+  } catch (erreur) {
+    alertTool(erreur.response.data.error);
+    return false
   }
 };
 
@@ -181,4 +251,7 @@ export const { Provider, Context } = createDataContext(authReducer, {
   getUserProfil,
   saveChangesProfil,
   saveAvatarProfil,
+  changePwd,
+  restorePwd,
+  searchProduct,
 });

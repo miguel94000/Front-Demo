@@ -1,16 +1,7 @@
-const axios = require('axios');
-const API_CODE_BARRE = "737628064502";
+import axios from "axios";
 
-export default function getProduit () {
-  const url = 'https://world.openfoodfacts.org/api/v0/product/' + API_CODE_BARRE + '.json'
-
-  return axios.get(url)
-  
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  
-}
+// Recoit en parametre un code barre et retourne en .json une fiche produit
+  export default axios.create({
+    baseURL: "https://world.openfoodfacts.org/api/v0/product/"
+})
+    

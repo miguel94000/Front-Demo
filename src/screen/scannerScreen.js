@@ -1,46 +1,93 @@
+import React, { useState, useEffect, useContext } from "react";
+import { Image, View, Text, StyleSheet, Button } from "react-native";
+import { BarCodeScanner } from "expo-barcode-scanner";
+import { Context as AuthContext } from "../context/authContext";
+import { Modal, ActivityIndicator, Colors } from "react-native-paper";
 
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, AsyncStorage } from 'react-native';
-import { TextInput } from 'react-native-paper';
-import apiConnectBack from '../../API/apiConnectBack';
-
+// Scan du code barre
 const scannerScreen = ({ navigation }) => {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+  const [loadind, setLoading] = useState(false);
+  const { searchProduct } = useContext(AuthContext);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [pseudo, setPseudo] = useState("");
-  const signupCall = async () => await apiConnectBack.post("/signup", { email, password, pseudo });
+  useEffect(() => {
+    // Demande la permission pour accéder à la camera dès le chargement de la vue
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
 
-
-  //AsyncStorage.setItem("token", signinCall.data.token) // Stocker dans le local storage
+  // Affichage du scan code barre si il y a une permission
+  if (hasPermission === null) {
+    return <Text>Requière une perssion pour accéder à la camera</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>Pas d'accès à la camera</Text>;
+  }
 
   return (
     <View style={styles.container}>
-      <TextInput style={styles.TextInput}
-        label="Pseudo"
-        value={pseudo}
-        onChangeText={(value) => setPseudo(value)}
-      />
+      <BarCodeScanner
+        style={styles.code_barre}
+        style={StyleSheet.absoluteFillObject}
+        onBarCodeScanned={
+          scanned
+            ? undefined
+            : async ({data}) => {
+                setLoading(true);
+                setScanned(true);
+                // Cinématique de gestion du code barre une fois scanné
+                console.log("Scanner :", data);
+                const continued = await searchProduct(data);
+                setTimeout(() => {
+                  setScanned(false);
+                  setLoading(false);
+                  continued ? navigation.navigate("Product") : null;
+                }, 1000);
+              }
+        }
+      >
+        <Image
+          style={styles.code_barre_image}
+          source={require("../../assets/cb.png")}
+        />
+      </BarCodeScanner>
+      <Modal
+        visible={loadind}
+        onDismiss={() => {
+          setAvatar(state.profil.avatar);
+          setShowUploadPicsButton(false);
+        }}
+        contentContainerStyle={styles.load_modal}
+      >
+        <ActivityIndicator animating={true} color="#488EED" />
+      </Modal>
     </View>
   );
-}
+};
 
-scannerScreen.navigationOption = {
-  title: "Scanner",
-}
-
+// CSS
 const styles = StyleSheet.create({
-
   container: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignContent: "center"
+    flex: 1,
   },
 
-  textInput: {
+  code_barre: {
+    flex: 1,
+  },
 
-  }
+  code_barre_image: {
+    alignSelf: "center",
+    marginTop: 300,
+  },
 
-})
+  load_modal: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+
 export default scannerScreen;

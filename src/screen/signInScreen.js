@@ -3,6 +3,7 @@ import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { Context as AuthContext } from "../context/authContext";
 
+// Partie Authentification
 const SignInScreen = ({ navigation }) => {
   const { signIn } = useContext(AuthContext);
   const [email, setEmail] = useState("");
@@ -10,13 +11,6 @@ const SignInScreen = ({ navigation }) => {
   const [loadButton, setLoadButton] = useState(false);
   const [activedButton, setActivedButton] = useState(false);
 
-  const goSignIn = () => {
-    setTimeout(() => {
-      signIn({ email, password });
-      setLoadButton(false);
-      setActivedButton(false);
-    }, 3000);
-  };
   return (
     <View style={styles.container}>
       <Text style={styles.titre}>Acceder{"\n"}à votre profil</Text>
@@ -40,7 +34,10 @@ const SignInScreen = ({ navigation }) => {
           value={password}
           onChangeText={(value) => setPassword(value)}
         />
-        <TouchableOpacity style={styles.pwd_Forget_Button}>
+        <TouchableOpacity
+          style={styles.pwd_Forget_Button}
+          onPress={() => navigation.navigate("RestorePassword")}
+        >
           <Text style={styles.pwd_Forget_Text_Button}>
             Mot de passe oublié ?
           </Text>
@@ -51,16 +48,18 @@ const SignInScreen = ({ navigation }) => {
         color="white"
         disabled={activedButton}
         loading={loadButton}
-        onPress={() => {
-          setActivedButton(true)
+        onPress={async () => {
+          setActivedButton(true);
           setLoadButton(true);
-          goSignIn()
+          await signIn({ email, password });
+          setLoadButton(false);
+          setActivedButton(false);
         }}
       >
         <Text>Se connecter</Text>
       </Button>
       <View style={styles.go_signUp_container}>
-        <Text>Pas de compte ? </Text>
+        <Text>Vous n'avez pas de compte ? </Text>
         <TouchableOpacity
           style={styles.go_SignUp_Button}
           onPress={() => navigation.navigate("SignUp")}
@@ -76,14 +75,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
-    backgroundColor:"white",
+    backgroundColor: "white",
     paddingHorizontal: 20,
     paddingBottom: 20,
   },
   titre: {
     fontWeight: "bold",
     textTransform: "uppercase",
-    fontSize: 25,
+    fontSize: 35,
     marginTop: 10,
     color: "#488EED",
     textAlign: "center",
@@ -98,10 +97,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     height: "27%",
   },
-  textInput: {
-  },
+  textInput: {},
   pwd_Forget_Button: {
-    width: "50%",
     alignSelf: "flex-end",
   },
   pwd_Forget_Text_Button: {
@@ -110,7 +107,7 @@ const styles = StyleSheet.create({
   },
   connexion_Button: {
     backgroundColor: "#488EED",
-    paddingTop: 10,
+    paddingTop: 15,
     alignSelf: "center",
     height: 70,
     width: 300,
@@ -119,10 +116,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "center",
   },
-  go_SignUp_Button: {
-    width: "35%",
-  },
+  go_SignUp_Button: {},
   go_SignUp_Button_Text: {
+    alignSelf: "center",
     fontWeight: "bold",
     color: "#488EED",
   },

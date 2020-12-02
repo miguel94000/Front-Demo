@@ -32,16 +32,11 @@ const HomeScreen = ({ navigation }) => {
   // Vérification du token pour recontruire le State
   useEffect(() => {
     const getToken = async () => {
-      console.log("ESPECE")
-      if (!state) {
-        console.log("JE COMMENCE :");
-        const token = await AsyncStorage.getItem("token");
-        console.log("Token :", token)
-        token === null ? null : getUserProfil({ token });
-      }
+      const token = await AsyncStorage.getItem("token");
+      console.log("Token :", token);
+      token === null ? null : getUserProfil({ token });
     };
     getToken();
-    // console.log("State ")
   }, []);
 
   return (
@@ -69,10 +64,17 @@ const HomeScreen = ({ navigation }) => {
       />
       <View style={styles.menu_button_container}>
         <BoutonMenuAccueil linkValue={() => navigation.navigate("Scanner")}>
-          <Text>Scanner un produit</Text>
+          <IconFont
+            name="barcode"
+            size={70}
+            color={"white"}
+          />
+          <Text style={styles.bouton_menu_accueil_text}>Scanner un produit</Text>
         </BoutonMenuAccueil>
         <BoutonMenuAccueil linkValue={() => navigation.navigate("Search")}>
-          <Text>Rechercher un produit</Text>
+          <Text style={styles.menu_button_container_Text}>
+            Rechercher un produit
+          </Text>
         </BoutonMenuAccueil>
         <BoutonMenuAccueil linkValue={() => navigation.navigate("Favorite")}>
           <Text>Produit favoris</Text>
@@ -93,6 +95,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
+    paddingBottom: 10,
   },
   param_button_container: {
     flexDirection: "row",
@@ -120,9 +123,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#488EED",
     width: 300,
     height: 80,
-    paddingTop: 15,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
+
+  bouton_menu_accueil_text: {
+  },
+
   menu_bottom_container: {
+    color: "white",
     alignItems: "flex-end",
     paddingRight: 25,
     marginTop: 100,
